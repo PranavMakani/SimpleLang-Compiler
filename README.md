@@ -1,50 +1,40 @@
-# SimpleLang Compiler Project
+# SimpleLang Compiler
 
 ## Project Overview
-The SimpleLang Compiler is a project designed to convert SimpleLang code into assembly code for an 8-bit CPU. This project provides a deep dive into the fundamental processes of how programming languages interact with computer hardware. By the end, you'll understand the journey from writing high-level code to generating low-level assembly instructions that a CPU can execute.
 
-## How the Code Works
+The **SimpleLang Compiler** is a project that compiles code written in the SimpleLang programming language into assembly code for an 8-bit CPU. This project provides a clear understanding of the three core stages of compilation: lexical analysis, parsing, and code generation.
 
-### Lexer (`lexer.c`)
-The lexer is responsible for scanning the SimpleLang source code and breaking it down into tokens—small, meaningful elements like keywords, operators, and identifiers. 
+## Components
 
-- **Functions and Variables:**
-  - `getNextToken()`: This function reads the input code and returns the next token.
-  - `Token Available_token`: Holds the current token being processed.
-  - `input[]`: An array holding the SimpleLang source code.
-  - `TOKEN_ASSIGN` and `TOKEN_EQUAL`: Differentiates between the assignment operator (`=`) and the equality operator (`==`).
+### 1. Lexer (`lexer.c`)
 
-The lexer takes a line like `x = 5 + 3;` and converts it into tokens: `IDENTIFIER(x)`, `ASSIGN(=)`, `NUMBER(5)`, `PLUS(+)`, `NUMBER(3)`, and `SEMICOLON(;)`.
+The Lexer (or lexical analyzer) is responsible for reading the source code character by character and converting it into a sequence of tokens. Tokens are the building blocks of the language, such as keywords, operators, and identifiers.
 
-### Parser (`parser.c`)
-The parser receives the tokens from the lexer and constructs an Abstract Syntax Tree (AST). This tree represents the grammatical structure of the source code.
+#### Key Functions:
+- **`getNextToken(FILE* file, Token* token)`**: This function reads characters from the input file, identifies token patterns, and assigns the appropriate token type (e.g., `TOKEN_INT`, `TOKEN_IDENTIFIER`). It handles operators, punctuation, and whitespace, and it returns tokens like `TOKEN_ASSIGN` for `=` and `TOKEN_COMPARE` for `==`.
 
-- **Functions and Variables:**
-  - `Execution()`: Handles parsing expressions like `5 + 3`.
-  - `Junc* root`: The root node of the AST, where `Junc` is the structure used to represent tree nodes.
-  - `TOKEN_ASSIGN` vs `TOKEN_EQUAL`: Differentiates between assignment and comparison during parsing.
-  - `Execition()`: Parses statements such as variable assignments or loops.
+### 2. Parser (`parser.c`)
 
-The AST is crucial because it determines how different parts of the code relate to each other. For instance, `x = 5 + 3;` would result in a tree where `x` is assigned the result of `5 + 3`.
+The Parser is responsible for analyzing the sequence of tokens produced by the Lexer and constructing an Abstract Syntax Tree (AST). The AST represents the hierarchical structure of the source code.
 
-### Code Generator (`codegen.c`)
-The code generator traverses the AST and produces the corresponding assembly code. This assembly code is what the CPU will execute.
+#### Key Functions:
+- **`Tree_junc* Execution(FILE* file, Token* Available_Token)`**: This function initiates parsing by consuming tokens and constructing the AST. It handles parsing for various statements, such as variable declarations and control flow (e.g., `if` statements).
 
-- **Functions and Variables:**
-  - `assemblycde(Junc_Tree*junc)`: Recursively walks the AST and generates the corresponding assembly instructions.
-  - `InstructionSet opcodes`: A mapping of operations (like `ADD`, `SUB`) to their corresponding assembly codes.
 
-If the AST node represents an addition operation, the code generator will output an `ADD` instruction, like `ADD R1, R2`, where `R1` and `R2` are registers holding the numbers to be added.
+### 3. Code Generator (`codegen.c`)
 
-### Main Program (`main.c`)
-The main program coordinates the entire compilation process. It reads the SimpleLang source code, runs it through the lexer and parser, and then generates the final assembly code.
+The Code Generator traverses the AST created by the Parser and generates the corresponding assembly code. This is the final step, where the high-level SimpleLang code is transformed into low-level instructions for the 8-bit CPU.
 
-- **Functions and Variables:**
-  - `main()`: The entry point of the compiler, orchestrating the lexical analysis, parsing, and code generation.
-  - `inputFile`: A file pointer to the SimpleLang source code.
-  - `char assemblyCode[]`: An array that stores the generated assembly code.
+#### Key Functions:
+- **`void assemblycode(Tree_junc* junc, FILE* file)`**: This recursive function generates assembly code by traversing the AST nodes. Depending on the type of AST node (e.g., an assignment, arithmetic operation, or conditional), it outputs the appropriate assembly instructions.
 
-After processing, the final assembly code is printed out, ready to be executed on an 8-bit CPU simulator.
+### 4. Main Program (`main.c`)
+
+The Main Program is the entry point of the compiler. It ties together the Lexer, Parser, and Code Generator, orchestrating the entire compilation process from reading the input file to producing the assembly code.
+
+#### Key Functions:
+- **`int main()`**: The `main()` function initializes the compilation process by opening the input file, calling the Lexer to tokenize the code, invoking the Parser to build the AST, and finally, generating the assembly code using the Code Generator.
+
 
 ## How to Get Started
 
