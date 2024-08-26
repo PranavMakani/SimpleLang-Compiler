@@ -1,0 +1,24 @@
+Variable declaration
+ldi r0, 0  
+ldi r1, 0  
+ldi r2, 0  
+
+Arithmetic operators
+mov r0, r1  
+add r0, r2  
+
+mov r1, r0  
+sub r1, r2  
+
+Assignment
+mov r0, r1  
+mov r1, r2  
+mov r2, r0  
+
+Conditionals
+lable_if:
+cmp r0, r1     
+jne lable      
+mov r0, r1     
+add r0, r2     
+lable:
