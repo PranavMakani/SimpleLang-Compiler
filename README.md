@@ -10,7 +10,7 @@ The lexer is responsible for scanning the SimpleLang source code and breaking it
 
 - **Functions and Variables:**
   - `getNextToken()`: This function reads the input code and returns the next token.
-  - `Token current_token`: Holds the current token being processed.
+  - `Token Available_token`: Holds the current token being processed.
   - `input[]`: An array holding the SimpleLang source code.
   - `TOKEN_ASSIGN` and `TOKEN_EQUAL`: Differentiates between the assignment operator (`=`) and the equality operator (`==`).
 
@@ -20,10 +20,10 @@ The lexer takes a line like `x = 5 + 3;` and converts it into tokens: `IDENTIFIE
 The parser receives the tokens from the lexer and constructs an Abstract Syntax Tree (AST). This tree represents the grammatical structure of the source code.
 
 - **Functions and Variables:**
-  - `parseExpression()`: Handles parsing expressions like `5 + 3`.
+  - `Execution()`: Handles parsing expressions like `5 + 3`.
   - `Junc* root`: The root node of the AST, where `Junc` is the structure used to represent tree nodes.
   - `TOKEN_ASSIGN` vs `TOKEN_EQUAL`: Differentiates between assignment and comparison during parsing.
-  - `parseStatement()`: Parses statements such as variable assignments or loops.
+  - `Execition()`: Parses statements such as variable assignments or loops.
 
 The AST is crucial because it determines how different parts of the code relate to each other. For instance, `x = 5 + 3;` would result in a tree where `x` is assigned the result of `5 + 3`.
 
@@ -31,8 +31,7 @@ The AST is crucial because it determines how different parts of the code relate 
 The code generator traverses the AST and produces the corresponding assembly code. This assembly code is what the CPU will execute.
 
 - **Functions and Variables:**
-  - `generateCode(Junc* node)`: Recursively walks the AST and generates the corresponding assembly instructions.
-  - `emit()`: Outputs assembly instructions.
+  - `assemblycde(Junc_Tree*junc)`: Recursively walks the AST and generates the corresponding assembly instructions.
   - `InstructionSet opcodes`: A mapping of operations (like `ADD`, `SUB`) to their corresponding assembly codes.
 
 If the AST node represents an addition operation, the code generator will output an `ADD` instruction, like `ADD R1, R2`, where `R1` and `R2` are registers holding the numbers to be added.
